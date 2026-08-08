@@ -17,7 +17,7 @@
   --color-magenta-10: rgba(224,18,139,0.10);
   --color-magenta-15: rgba(224,18,139,0.15);
   --color-orange-10: rgba(246,137,32,0.10);
-  --fg-secondary: rgba(26,26,26,0.60);
+  --fg-secondary: rgba(26,26,26,0.68);
   --gradient-brand: linear-gradient(135deg, #E0128B 0%, #F68920 100%);
   --gradient-brand-90: linear-gradient(90deg, #E0128B 0%, #F68920 100%);
   --radius-sm: 8px;
@@ -657,6 +657,33 @@ footer.page-footer.hidden { display: none; }
 .footer-contact:hover { color: #25D366; border-color: #25D366; }
 .footer-contact svg { width: 15px; height: 15px; flex: none; }
 
+.footer-legal-link {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: .76rem; font-weight: 600;
+  color: var(--fg-secondary); text-decoration: underline;
+  padding: 4px;
+}
+.footer-legal-link:hover { color: var(--color-magenta); }
+
+/* ============ LEGAL MODAL ============ */
+.legal-modal {
+  max-width: 520px;
+  max-height: 82vh; overflow-y: auto;
+  text-align: right;
+}
+.legal-modal h3 { text-align: center; }
+.legal-modal h4 {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+  color: var(--color-magenta); margin: 24px 0 8px;
+}
+.legal-modal h4:first-of-type { margin-top: 4px; }
+.legal-modal p {
+  font-size: .88rem; line-height: 1.7; color: var(--color-dark);
+  margin: 0 0 10px;
+}
+.legal-modal p strong { font-weight: 700; }
+.legal-modal a { color: var(--color-magenta); font-weight: 600; }
+
 /* ============ DESKTOP QR FAB ============ */
 .desktop-qr-fab {
   display: none;
@@ -861,7 +888,31 @@ footer.page-footer.hidden { display: none; }
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.06h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.51 3.68-8.19 8.24-8.19 2.2 0 4.27.86 5.82 2.41a8.14 8.14 0 0 1 2.41 5.79c0 4.51-3.68 8.24-8.23 8.24Zm4.5-6.16c-.25-.12-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.96-.15.16-.29.18-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.65-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.47-.01-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.24 3.75.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.17.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
     צרו קשר / הצטרפו
   </button>
+  <button class="footer-legal-link" id="legalBtn">נגישות, פרטיות ותנאי שימוש</button>
 </footer>
+
+<!-- ============ LEGAL MODAL ============ -->
+<div class="connect-backdrop" id="legalBackdrop">
+  <div class="connect-modal legal-modal" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle">
+    <div class="connect-modal-inner">
+      <button class="connect-modal-close" id="legalModalClose" type="button" aria-label="סגור">✕</button>
+      <h3 id="legalModalTitle">נגישות, פרטיות ותנאי שימוש</h3>
+
+      <h4>נגישות</h4>
+      <p>העמוד נבנה תוך התייחסות לתקן הנגישות הישראלי (WCAG 2.1, רמה AA): תמיכה מלאה בניווט מקלדת, אינדיקציית פוקוס נראית בכל רכיב אינטראקטיבי, תיוג ARIA לכפתורים, טאבים וחלונות קופצים, ותאימות לתקורא (screen reader).</p>
+      <p>נתקלתם בבעיית נגישות? כתבו לנו בוואטסאפ — הפרטים בכפתור "צרו קשר" למעלה.</p>
+
+      <h4>פרטיות</h4>
+      <p>העמוד <strong>אינו אוסף מידע אישי כלשהו</strong> ואינו משתמש בכלי אנליטיקס או מעקב מכל סוג. אין טפסים ואין עוגיות מעקב. קישורי וואטסאפ בעמוד פותחים את וואטסאפ עצמו — כל שיחה שם כפופה למדיניות הפרטיות של וואטסאפ, לא של העמוד הזה.</p>
+
+      <h4>תנאי שימוש</h4>
+      <p>התוכן בעמוד (הפרומפטים, ההוראות והמתודולוגיה) ניתן לשימוש חופשי לצרכים אישיים ולימודיים — אפשר להעתיק, לערוך ולהתאים כרצונכם. העמוד מסופק כפי שהוא ("as is"), ללא אחריות לתוצאות השימוש בפרומפטים מול Gemini או כל כלי AI אחר. העמוד עשוי להתעדכן או להוסר ללא הודעה מוקדמת — הוא משמש כחומר עזר לסדנה ואינו שירות מסחרי מתמשך.</p>
+
+      <h4>יצירת קשר</h4>
+      <p><a href="mailto:meimagineai@gmail.com">meimagineai@gmail.com</a></p>
+    </div>
+  </div>
+</div>
 
 <!-- ============ CONNECT MODAL ============ -->
 <div class="connect-backdrop" id="connectBackdrop">
@@ -1649,12 +1700,12 @@ function buildTestScreen(screenIndex) {
       </button>
     </div>
     <div class="mission-box">
-      <div class="mission-tabs">
-        <button class="mission-tab active" data-mission="1">מבחן 1</button>
-        <button class="mission-tab" data-mission="2">מבחן 2</button>
+      <div class="mission-tabs" role="tablist" aria-label="מבחני בדיקה">
+        <button class="mission-tab active" data-mission="1" role="tab" id="tab-1" aria-selected="true" aria-controls="panel-1">מבחן 1</button>
+        <button class="mission-tab" data-mission="2" role="tab" id="tab-2" aria-selected="false" aria-controls="panel-2" tabindex="-1">מבחן 2</button>
       </div>
-      <div class="mission-panel active" data-mission-panel="1"><p><strong>פתחו שיחה חדשה</strong> ובדקו רעיון מכלי הוראה.</p></div>
-      <div class="mission-panel" data-mission-panel="2"><p><strong>פתחו שיחה חדשה</strong> ובדקו רעיון מכלי עבודה וניהול.</p></div>
+      <div class="mission-panel active" data-mission-panel="1" role="tabpanel" id="panel-1" aria-labelledby="tab-1"><p><strong>פתחו שיחה חדשה</strong> ובדקו רעיון מכלי הוראה.</p></div>
+      <div class="mission-panel" data-mission-panel="2" role="tabpanel" id="panel-2" aria-labelledby="tab-2"><p><strong>פתחו שיחה חדשה</strong> ובדקו רעיון מכלי עבודה וניהול.</p></div>
       <div class="watch-list">
         <h4>מה מחפשים?</h4>
         <div class="watch-item"><span class="box"></span>מזהה את המסלול הנכון</div>
@@ -1695,6 +1746,13 @@ function goToScreen(i) {
     nextBtn.innerHTML = `${nextLabel}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
   }
   document.querySelector('.wizard-viewport').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const activeScreen = document.getElementById('screen-' + currentScreen);
+  const heading = activeScreen && activeScreen.querySelector('.screen-head h2, .test-card h3');
+  if (heading) {
+    heading.setAttribute('tabindex', '-1');
+    heading.focus({ preventScroll: true });
+  }
 }
 
 function renderTrack(track) {
@@ -1720,9 +1778,15 @@ function renderTrack(track) {
 
   document.querySelectorAll('.mission-tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.mission-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.mission-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+        t.setAttribute('tabindex', '-1');
+      });
       document.querySelectorAll('.mission-panel').forEach(p => p.classList.remove('active'));
       tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      tab.setAttribute('tabindex', '0');
       document.querySelector(`[data-mission-panel="${tab.getAttribute('data-mission')}"]`).classList.add('active');
     });
   });
@@ -1777,11 +1841,18 @@ document.getElementById('desktopQrFab').addEventListener('click', () => qrBackdr
 document.getElementById('qrModalClose').addEventListener('click', () => qrBackdrop.classList.remove('open'));
 qrBackdrop.addEventListener('click', (e) => { if (e.target === qrBackdrop) qrBackdrop.classList.remove('open'); });
 
+/* ============ LEGAL MODAL ============ */
+const legalBackdrop = document.getElementById('legalBackdrop');
+document.getElementById('legalBtn').addEventListener('click', () => legalBackdrop.classList.add('open'));
+document.getElementById('legalModalClose').addEventListener('click', () => legalBackdrop.classList.remove('open'));
+legalBackdrop.addEventListener('click', (e) => { if (e.target === legalBackdrop) legalBackdrop.classList.remove('open'); });
+
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
   helperSheetBackdrop.classList.remove('open');
   connectBackdrop.classList.remove('open');
   qrBackdrop.classList.remove('open');
+  legalBackdrop.classList.remove('open');
 });
 
 document.addEventListener('click', (e) => {
