@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>חושבים לפני שבונים — ספר הפרומפטים למרצים</title>
 <meta name="description" content="7 צעדים מרעיון ראשוני לאפיון כלי AI שאפשר לבנות ממנו — ספר פרומפטים לסדנת אפיון, שני מסלולים: כלי הוראה וכלי עבודה וניהול.">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="חושבים לפני שבונים — ספר הפרומפטים למרצים">
+<meta property="og:description" content="7 צעדים מרעיון ראשוני לאפיון כלי AI שאפשר לבנות ממנו — ספר פרומפטים לסדנת אפיון.">
+<meta property="og:image" content="https://wenjygal.github.io/thinking-before-building/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://wenjygal.github.io/thinking-before-building/">
+<meta property="og:locale" content="he_IL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="חושבים לפני שבונים — ספר הפרומפטים למרצים">
+<meta name="twitter:description" content="7 צעדים מרעיון ראשוני לאפיון כלי AI שאפשר לבנות ממנו.">
+<meta name="twitter:image" content="https://wenjygal.github.io/thinking-before-building/og-image.png">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap');
 
@@ -179,6 +197,15 @@ body { transition: background-color .3s ease, color .3s ease; }
 }
 .hero-connect-btn:hover { background: rgba(255,255,255,0.24); transform: translateY(-2px); }
 .hero-connect-btn svg { width: 15px; height: 15px; flex: none; }
+
+.hero-legal-link {
+  display: block; margin-top: 20px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: .78rem; font-weight: 600;
+  color: rgba(255,255,255,0.75); text-decoration: underline;
+  padding: 4px;
+}
+.hero-legal-link:hover { color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
   .robot-dot { animation: none !important; }
@@ -807,6 +834,7 @@ footer.page-footer.hidden { display: none; }
         צרו קשר / הצטרפו
       </button>
     </div>
+    <button class="hero-legal-link" id="heroLegalBtn">נגישות, פרטיות ותנאי שימוש</button>
   </div>
 </header>
 
@@ -1844,6 +1872,7 @@ qrBackdrop.addEventListener('click', (e) => { if (e.target === qrBackdrop) qrBac
 /* ============ LEGAL MODAL ============ */
 const legalBackdrop = document.getElementById('legalBackdrop');
 document.getElementById('legalBtn').addEventListener('click', () => legalBackdrop.classList.add('open'));
+document.getElementById('heroLegalBtn').addEventListener('click', () => legalBackdrop.classList.add('open'));
 document.getElementById('legalModalClose').addEventListener('click', () => legalBackdrop.classList.remove('open'));
 legalBackdrop.addEventListener('click', (e) => { if (e.target === legalBackdrop) legalBackdrop.classList.remove('open'); });
 
