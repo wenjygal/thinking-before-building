@@ -28,7 +28,7 @@
   --shadow-hover: 0 8px 28px rgba(224,18,139,0.16);
   --shadow-elevated: 0 16px 48px rgba(224,18,139,0.22);
   --font-body: 'Rubik', sans-serif;
-  --font-display: 'Poppins', sans-serif;
+  --font-display: 'Rubik', sans-serif;
   --track-a: #E0128B;
   --track-b: #7A3FE0;
 }
@@ -112,14 +112,16 @@ body { transition: background-color .3s ease, color .3s ease; }
 }
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4.8vw, 4rem);
+  font-size: clamp(1.6rem, 6vw, 4rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.02em;
   margin: 0 0 clamp(12px, 2.5vh, 22px);
-  white-space: nowrap;
   color: #fff;
   text-shadow: 0 4px 32px rgba(0,0,0,0.12);
+}
+@media (min-width: 460px) {
+  .hero h1 { white-space: nowrap; font-size: clamp(1.9rem, 4.8vw, 4rem); }
 }
 .hero h1 .accent {
   -webkit-text-stroke: 1.5px rgba(255,255,255,0.9);
@@ -313,6 +315,20 @@ body { transition: background-color .3s ease, color .3s ease; }
 @media (max-width: 640px) {
   .wp-label { display: none; }
   .wp-connector { margin-top: -12px; }
+}
+
+@media (max-width: 480px) {
+  .wizard-viewport { padding: 32px 16px 60px; }
+  .screen-card { padding: 26px 20px 24px; border-radius: 22px; }
+  .screen-card::before { font-size: 5.5rem; }
+  .code-block { padding: 18px 16px; font-size: .85rem; }
+  .copy-btn { width: 100%; justify-content: center; }
+  .test-card { padding: 28px 20px; }
+  .picker { padding: 60px 16px 80px; }
+  .track-card { padding: 30px 22px; }
+  .wizard-nav { flex-wrap: wrap; }
+  .nav-btn { padding: 12px 20px; font-size: .88rem; }
+  .connect-modal, .helper-sheet { padding-inline: 22px; }
 }
 
 /* ============ HELPER INLINE LINK + SHEET ============ */
