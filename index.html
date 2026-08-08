@@ -315,20 +315,19 @@ body { transition: background-color .3s ease, color .3s ease; }
   .wp-connector { margin-top: -12px; }
 }
 
-/* ============ HELPER FAB + SHEET ============ */
-.helper-fab {
-  position: fixed; bottom: 24px; left: 24px; z-index: 80;
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--color-dark); color: var(--color-bg);
-  border: none; border-radius: var(--radius-pill);
-  padding: 13px 22px 13px 18px;
-  font-family: var(--font-body); font-weight: 700; font-size: .85rem;
-  cursor: pointer;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
-  transition: transform .25s cubic-bezier(.2,.8,.2,1);
+/* ============ HELPER INLINE LINK + SHEET ============ */
+.helper-inline {
+  margin-top: 14px;
+  font-size: .86rem;
+  color: var(--fg-secondary);
 }
-.helper-fab:hover { transform: translateY(-3px); }
-.helper-fab .spark { font-size: 1.05rem; }
+.helper-inline-link {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: .86rem; font-weight: 700;
+  color: var(--color-magenta); text-decoration: underline;
+  padding: 0;
+}
+.helper-inline-link:hover { color: var(--color-orange); }
 
 .helper-sheet-backdrop {
   position: fixed; inset: 0; z-index: 90;
@@ -626,6 +625,7 @@ footer.page-footer {
 }
 .connect-backdrop.open { display: flex; }
 .connect-modal {
+  position: relative;
   width: 100%; max-width: 380px;
   background: var(--color-white);
   border-radius: 26px;
@@ -637,16 +637,17 @@ footer.page-footer {
 }
 .connect-backdrop.open .connect-modal { transform: scale(1); opacity: 1; }
 .connect-modal-close {
-  position: absolute; top: 16px; left: 16px;
+  position: absolute; top: 14px; left: 14px;
   background: rgba(0,0,0,0.06); border: none; border-radius: 50%;
-  width: 32px; height: 32px; cursor: pointer; color: var(--fg-secondary);
+  width: 30px; height: 30px; cursor: pointer; color: var(--fg-secondary);
   display: flex; align-items: center; justify-content: center;
+  z-index: 2;
 }
 :root[data-theme="dark"] .connect-modal-close { background: rgba(255,255,255,0.08); }
 .connect-modal-close:hover { color: var(--color-magenta); }
 .connect-modal-inner { position: relative; }
 .connect-modal h3 {
-  font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; margin: 4px 0 6px;
+  font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; margin: 4px 34px 6px;
 }
 .connect-modal .sub { font-size: .86rem; color: var(--fg-secondary); margin: 0 0 24px; }
 .connect-row {
@@ -753,10 +754,6 @@ footer.page-footer {
         </button>
       </div>
     </div>
-
-    <button class="helper-fab" id="helperFab">
-      <span class="spark">⚡</span> Gemini מתקדם מהר מדי?
-    </button>
 
     <div class="helper-sheet-backdrop" id="helperSheetBackdrop">
       <div class="helper-sheet">
@@ -1443,7 +1440,7 @@ function updateProgressBar() {
   });
 }
 
-function makeCodeBlock(text) {
+function makeCodeBlock(text, withHelperLink) {
   const wrap = document.createElement('div');
   wrap.className = 'code-wrap';
   const pre = document.createElement('pre');
@@ -1459,6 +1456,15 @@ function makeCodeBlock(text) {
   const holder = document.createElement('div');
   holder.appendChild(wrap);
   holder.appendChild(btn);
+  if (withHelperLink) {
+    const helperLine = document.createElement('p');
+    helperLine.className = 'helper-inline';
+    helperLine.innerHTML = `Gemini מתקדם מהר מדי? <button class="helper-inline-link" type="button">שלחו פרומפט להאטת השיחה</button>`;
+    helperLine.querySelector('.helper-inline-link').addEventListener('click', () => {
+      document.getElementById('helperSheetBackdrop').classList.add('open');
+    });
+    holder.appendChild(helperLine);
+  }
   return holder;
 }
 
@@ -1493,6 +1499,8 @@ function buildStepScreen(step, screenIndex, isShared) {
   why.innerHTML = `<span class="icon">💭</span><div><strong>למה עכשיו?</strong>${step.why}</div>`;
   card.appendChild(why);
 
+  const showHelperLink = !isShared;
+
   if (step.label === 'UX/UI') {
     const l1 = document.createElement('div');
     l1.className = 'substep-label'; l1.textContent = 'UX — חוויית השימוש';
@@ -1501,10 +1509,10 @@ function buildStepScreen(step, screenIndex, isShared) {
     const l2cont = document.createElement('div');
     l2cont.innerHTML = `<div class="substep-label" style="margin-top:30px">UI — הממשק שמשרת אותה</div><p class="substep-hint">רק אחר כך: איך זה נראה ומאורגן.</p>`;
     card.appendChild(l1); card.appendChild(h1);
-    card.appendChild(makeCodeBlock(step.prompt));
+    card.appendChild(makeCodeBlock(step.prompt, showHelperLink));
     card.appendChild(l2cont);
   } else {
-    card.appendChild(makeCodeBlock(step.prompt));
+    card.appendChild(makeCodeBlock(step.prompt, showHelperLink));
   }
 
   const outcome = document.createElement('div');
@@ -1652,9 +1660,7 @@ prevBtn.addEventListener('click', () => goToScreen(currentScreen - 1));
 nextBtn.addEventListener('click', () => goToScreen(currentScreen + 1));
 
 /* ============ HELPER BOTTOM SHEET ============ */
-const helperFab = document.getElementById('helperFab');
 const helperSheetBackdrop = document.getElementById('helperSheetBackdrop');
-helperFab.addEventListener('click', () => helperSheetBackdrop.classList.add('open'));
 document.getElementById('helperSheetClose').addEventListener('click', () => helperSheetBackdrop.classList.remove('open'));
 helperSheetBackdrop.addEventListener('click', (e) => { if (e.target === helperSheetBackdrop) helperSheetBackdrop.classList.remove('open'); });
 
