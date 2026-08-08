@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חושבים לפני שבונים — ספר הפרומפטים למרצים</title>
+<meta name="description" content="7 צעדים מרעיון ראשוני לאפיון כלי AI שאפשר לבנות ממנו — ספר פרומפטים לסדנת אפיון, שני מסלולים: כלי הוראה וכלי עבודה וניהול.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap');
+
+:root {
+  --color-magenta: #E0128B;
+  --color-orange: #F68920;
+  --color-bg: #F5F5F7;
+  --color-dark: #1A1A1A;
+  --color-white: #FFFFFF;
+  --color-magenta-10: rgba(224,18,139,0.10);
+  --color-magenta-15: rgba(224,18,139,0.15);
+  --color-orange-10: rgba(246,137,32,0.10);
+  --fg-secondary: rgba(26,26,26,0.60);
+  --gradient-brand: linear-gradient(135deg, #E0128B 0%, #F68920 100%);
+  --gradient-brand-90: linear-gradient(90deg, #E0128B 0%, #F68920 100%);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 28px rgba(224,18,139,0.16);
+  --shadow-elevated: 0 16px 48px rgba(224,18,139,0.22);
+  --font-body: 'Rubik', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+  --track-a: #E0128B;
+  --track-b: #7A3FE0;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #17141C;
+  --color-dark: #F5F2EE;
+  --color-white: #221D2A;
+  --fg-secondary: rgba(245,242,238,0.62);
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.35);
+  --shadow-hover: 0 10px 32px rgba(224,18,139,0.28);
+  --shadow-elevated: 0 20px 56px rgba(224,18,139,0.32);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #17141C;
+    --color-dark: #F5F2EE;
+    --color-white: #221D2A;
+    --fg-secondary: rgba(245,242,238,0.62);
+    --shadow-card: 0 2px 16px rgba(0,0,0,0.35);
+    --shadow-hover: 0 10px 32px rgba(224,18,139,0.28);
+    --shadow-elevated: 0 20px 56px rgba(224,18,139,0.32);
+  }
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.045) 1px, transparent 0) 0 0/22px 22px,
+    var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-dark);
+  direction: rtl;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+:root[data-theme="dark"] html, :root[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0) 0 0/22px 22px,
+    var(--color-bg);
+}
+body { transition: background-color .3s ease, color .3s ease; }
+
+.skip-link {
+  position: absolute; top: -100px; right: 12px;
+  background: var(--color-dark); color: var(--color-bg);
+  padding: 10px 18px; border-radius: var(--radius-md);
+  text-decoration: none; font-weight: 700; z-index: 500; transition: top .2s;
+}
+.skip-link:focus { top: 12px; }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  height: 100vh; height: 100dvh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px 24px;
+  text-align: center;
+  overflow: hidden;
+  background: var(--gradient-brand);
+  isolation: isolate;
+}
+.hero-canvas {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  opacity: .55;
+}
+.hero-glow {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(46% 60% at 78% 8%, rgba(255,255,255,0.28), transparent 62%),
+    radial-gradient(55% 50% at 12% 100%, rgba(0,0,0,0.22), transparent 65%);
+}
+.hero-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; max-height: 100%; overflow: visible; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.28);
+  backdrop-filter: blur(6px);
+  color: #fff; font-size: .74rem; font-weight: 700;
+  border-radius: var(--radius-pill); padding: 6px 16px 6px 12px;
+  letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: clamp(16px, 3vh, 32px);
+}
+.hero-eyebrow .robot-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: pulse-dot 2s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6.5vw, 4.6rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 0 0 clamp(12px, 2.5vh, 22px);
+  text-wrap: balance;
+  color: #fff;
+  text-shadow: 0 4px 32px rgba(0,0,0,0.12);
+}
+.hero h1 .accent {
+  display: block;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.9);
+  color: rgba(255,255,255,0.12);
+}
+.hero .subhead {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 clamp(10px, 2vh, 18px);
+  opacity: .96;
+}
+.hero .lede {
+  font-size: clamp(.9rem, 1.6vw, 1.02rem);
+  line-height: 1.65;
+  color: rgba(255,255,255,0.85);
+  max-width: 520px;
+  margin: 0 auto clamp(20px, 4vh, 36px);
+}
+.hero .lede strong { color: #fff; font-weight: 700; }
+.scroll-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #fff;
+  color: var(--color-magenta); font-weight: 700; font-size: 1rem;
+  padding: 16px 34px; border-radius: var(--radius-pill);
+  border: none; cursor: pointer;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.22);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease-out;
+}
+.scroll-cta:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 46px rgba(0,0,0,0.28); }
+.scroll-cta:active { transform: translateY(-1px) scale(.99); }
+.scroll-cta svg { width: 17px; height: 17px; transform: rotate(90deg); flex: none; }
+
+.hero-robot {
+  margin-top: clamp(20px, 4vh, 44px);
+  width: clamp(56px, 8vh, 88px); height: auto;
+  animation: float-robot 3.4s ease-in-out infinite;
+  filter: brightness(0) invert(1) drop-shadow(0 12px 24px rgba(0,0,0,0.25));
+  opacity: .96;
+}
+@keyframes float-robot {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-16px) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-robot, .robot-dot { animation: none !important; }
+}
+
+/* ============ TRACK PICKER ============ */
+.picker {
+  max-width: 920px; margin: 0 auto; padding: 100px 24px 120px;
+}
+.picker-eyebrow {
+  text-align: center; font-size: .8rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--color-magenta); margin-bottom: 16px;
+}
+.picker h2 {
+  text-align: center; font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 64px;
+}
+.track-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+@media (max-width: 680px) { .track-cards { grid-template-columns: 1fr; gap: 20px; } }
+
+.track-card {
+  background: var(--color-white);
+  border-radius: 28px;
+  padding: 44px 36px;
+  text-align: right;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 28px rgba(0,0,0,0.06);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s cubic-bezier(.2,.8,.2,1);
+  position: relative;
+  overflow: hidden;
+}
+.track-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: 28px;
+  padding: 2px;
+  background: linear-gradient(140deg, transparent 40%, var(--_edge) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity .35s ease-out;
+  pointer-events: none;
+}
+.track-card[data-track="a"] { --_edge: var(--track-a); }
+.track-card[data-track="b"] { --_edge: var(--track-b); }
+.track-card:hover::after { opacity: 1; }
+.track-card:hover { transform: translateY(-8px); box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 28px 56px rgba(0,0,0,0.14); }
+.track-card:focus-visible { outline: 3px solid var(--color-magenta); outline-offset: 3px; }
+.track-icon {
+  width: 64px; height: 64px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 26px; font-size: 1.9rem;
+  box-shadow: 0 8px 20px -6px var(--_glow);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.track-card:hover .track-icon { transform: scale(1.08) rotate(-4deg); }
+.track-card[data-track="a"] .track-icon { background: linear-gradient(135deg, var(--track-a), #F68920); --_glow: rgba(224,18,139,0.5); }
+.track-card[data-track="b"] .track-icon { background: linear-gradient(135deg, var(--track-b), #E0128B); --_glow: rgba(122,63,224,0.5); }
+.track-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.01em;
+}
+.track-card p { font-size: .98rem; line-height: 1.65; color: var(--fg-secondary); margin: 0 0 20px; }
+.track-card .track-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .86rem; font-weight: 700;
+}
+.track-card[data-track="a"] .track-cta { color: var(--track-a); }
+.track-card[data-track="b"] .track-cta { color: var(--track-b); }
+.track-card .track-cta svg { width: 14px; height: 14px; transition: transform .25s ease-out; }
+.track-card:hover .track-cta svg { transform: translateX(-4px); }
+
+/* ============ APP SHELL (post-selection) ============ */
+.app-shell { display: none; }
+.app-shell.active { display: block; }
+.picker-screen.hidden { display: none; }
+.hero.hidden { display: none; }
+
+/* ============ STICKY WIZARD BAR ============ */
+.wizard-bar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+:root[data-theme="dark"] .wizard-bar { border-bottom-color: rgba(255,255,255,0.08); }
+.wizard-bar-top {
+  max-width: 820px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 24px 8px;
+}
+.track-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .8rem; font-weight: 700;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  background: var(--color-white); box-shadow: var(--shadow-card);
+}
+.track-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+[data-active-track="a"] .track-pill .dot { background: var(--track-a); }
+[data-active-track="b"] .track-pill .dot { background: var(--track-b); }
+.switch-link {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: .8rem; font-weight: 600;
+  color: var(--fg-secondary); text-decoration: underline;
+  padding: 4px;
+}
+.switch-link:hover { color: var(--color-magenta); }
+
+.wizard-progress {
+  max-width: 820px; margin: 0 auto;
+  display: flex; align-items: center;
+  padding: 4px 24px 14px;
+}
+.wp-step {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  flex: 1; min-width: 0;
+  background: none; border: none; cursor: pointer; padding: 4px 2px;
+  font-family: var(--font-body);
+}
+.wp-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .76rem; font-weight: 700; font-family: var(--font-display);
+  background: rgba(0,0,0,0.06); color: var(--fg-secondary);
+  transition: all .3s cubic-bezier(.2,.8,.2,1);
+  flex: none;
+}
+:root[data-theme="dark"] .wp-num { background: rgba(255,255,255,0.08); }
+.wp-label {
+  font-size: .64rem; font-weight: 600; color: var(--fg-secondary);
+  text-align: center; line-height: 1.15; max-width: 60px;
+  transition: color .2s ease-out;
+}
+.wp-step.done .wp-num { background: var(--gradient-brand); color: #fff; }
+.wp-step.current .wp-num { background: var(--gradient-brand); color: #fff; box-shadow: 0 0 0 4px var(--color-magenta-10); transform: scale(1.12); }
+.wp-step.current .wp-label { color: var(--color-dark); font-weight: 700; }
+.wp-connector { flex: none; width: 100%; height: 2px; background: rgba(0,0,0,0.08); margin-top: -18px; position: relative; z-index: -1; }
+:root[data-theme="dark"] .wp-connector { background: rgba(255,255,255,0.1); }
+
+@media (max-width: 640px) {
+  .wp-label { display: none; }
+  .wp-connector { margin-top: -12px; }
+}
+
+/* ============ HELPER FAB + SHEET ============ */
+.helper-fab {
+  position: fixed; bottom: 24px; left: 24px; z-index: 80;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--color-dark); color: var(--color-bg);
+  border: none; border-radius: var(--radius-pill);
+  padding: 13px 22px 13px 18px;
+  font-family: var(--font-body); font-weight: 700; font-size: .85rem;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1);
+}
+.helper-fab:hover { transform: translateY(-3px); }
+.helper-fab .spark { font-size: 1.05rem; }
+
+.helper-sheet-backdrop {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(20,16,24,0.5);
+  backdrop-filter: blur(3px);
+  display: none; align-items: flex-end; justify-content: center;
+  padding: 0;
+}
+.helper-sheet-backdrop.open { display: flex; }
+.helper-sheet {
+  width: 100%; max-width: 640px;
+  background: var(--color-white);
+  border-radius: 26px 26px 0 0;
+  padding: 28px 30px 34px;
+  box-shadow: 0 -12px 40px rgba(0,0,0,0.2);
+  transform: translateY(100%);
+  transition: transform .38s cubic-bezier(.2,.8,.2,1);
+  max-height: 82vh; overflow-y: auto;
+}
+.helper-sheet-backdrop.open .helper-sheet { transform: translateY(0); }
+.helper-sheet-handle {
+  width: 40px; height: 4px; border-radius: var(--radius-pill);
+  background: rgba(0,0,0,0.14); margin: 0 auto 20px;
+}
+:root[data-theme="dark"] .helper-sheet-handle { background: rgba(255,255,255,0.18); }
+.helper-sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.helper-sheet-head h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px; }
+.helper-sheet-close {
+  background: rgba(0,0,0,0.06); border: none; border-radius: 50%;
+  width: 32px; height: 32px; cursor: pointer; color: var(--fg-secondary);
+  display: flex; align-items: center; justify-content: center;
+}
+:root[data-theme="dark"] .helper-sheet-close { background: rgba(255,255,255,0.08); }
+.helper-sheet-close:hover { color: var(--color-magenta); }
+.helper-sheet p.helper-desc { font-size: .87rem; color: var(--fg-secondary); margin: 0 0 16px; line-height: 1.6; }
+
+/* ============ WIZARD SCREEN ============ */
+.wizard-viewport { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.wizard-screen { display: none; }
+.wizard-screen.active { display: block; animation: screen-in .38s cubic-bezier(.2,.8,.2,1); }
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.screen-card {
+  background: var(--color-white);
+  border-radius: 28px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 30px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 40px 40px 36px;
+  position: relative;
+  overflow: hidden;
+}
+:root[data-theme="dark"] .screen-card { border-color: rgba(255,255,255,0.06); }
+.screen-card::before {
+  content: attr(data-num);
+  position: absolute; left: 4px; top: -30px;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 7.5rem; line-height: 1;
+  color: var(--color-dark); opacity: 0.04;
+  pointer-events: none;
+}
+:root[data-theme="dark"] .screen-card::before { opacity: 0.055; }
+
+.screen-head { position: relative; z-index: 1; margin-bottom: 26px; }
+.screen-eyebrow {
+  font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--color-magenta); margin-bottom: 8px;
+}
+.screen-head h2 {
+  font-family: var(--font-display); font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-weight: 800; margin: 0; letter-spacing: -0.01em;
+}
+
+.why-now {
+  position: relative; z-index: 1;
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--color-orange-10);
+  border-radius: 14px;
+  padding: 18px 22px; margin-bottom: 26px;
+  font-size: .93rem; line-height: 1.65;
+}
+.why-now .icon { flex: none; font-size: 1.15rem; margin-top: 1px; }
+.why-now strong { display: block; font-size: .75rem; text-transform: uppercase; letter-spacing: .07em; color: var(--color-orange); margin-bottom: 5px; }
+
+.substep-label {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-weight: 700; font-size: .84rem;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--color-magenta);
+  margin: 30px 0 10px;
+}
+.substep-label:first-child { margin-top: 0; }
+.substep-hint { position: relative; z-index: 1; font-size: .9rem; color: var(--fg-secondary); margin: 0 0 16px; line-height: 1.6; }
+
+.code-wrap { position: relative; z-index: 1; margin-top: 6px; }
+.code-block {
+  background: var(--color-dark);
+  color: #F5F5F7;
+  border-radius: 16px;
+  padding: 26px 28px;
+  font-family: 'Rubik', monospace;
+  font-size: .92rem; line-height: 1.85;
+  white-space: pre-wrap; word-break: break-word;
+  overflow-x: auto; overflow-y: auto;
+  direction: rtl; text-align: right;
+  margin: 0; max-height: 46vh;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+:root[data-theme="dark"] .code-block { background: #0E0C12; }
+.code-block .ph { color: var(--color-orange); font-weight: 700; }
+.copy-btn {
+  display: flex; align-items: center; gap: 8px; margin-top: 16px;
+  margin-inline-start: auto;
+  background: var(--gradient-brand); color: #fff;
+  font-family: var(--font-body); font-size: .9rem; font-weight: 700;
+  border-radius: var(--radius-pill); padding: 13px 30px; border: none;
+  cursor: pointer; transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease-out;
+  box-shadow: 0 6px 16px -4px rgba(224,18,139,0.4);
+}
+.copy-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -4px rgba(224,18,139,0.5); }
+.copy-btn:active { transform: scale(.97); }
+.copy-btn.copied { background: #1F8A5B; box-shadow: 0 6px 16px -4px rgba(31,138,91,0.5); }
+.copy-btn svg { width: 15px; height: 15px; flex: none; }
+
+.outcome-box {
+  position: relative; z-index: 1;
+  margin-top: 28px; display: flex; gap: 14px; align-items: flex-start;
+  background: var(--color-magenta-10); border-radius: 14px;
+  padding: 18px 22px;
+}
+.outcome-box .icon { flex: none; font-size: 1.25rem; }
+.outcome-box strong { display: block; font-size: .75rem; text-transform: uppercase; letter-spacing: .07em; color: var(--color-magenta); margin-bottom: 5px; }
+.outcome-box p { margin: 0; font-size: .92rem; line-height: 1.6; }
+
+.milestone {
+  position: relative; z-index: 1;
+  margin: 26px 0 4px; text-align: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+  color: var(--color-magenta);
+}
+
+/* ============ WIZARD NAV (prev/next) ============ */
+.wizard-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-top: 28px;
+  max-width: 780px;
+}
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--font-body); font-weight: 700; font-size: .92rem;
+  padding: 14px 28px; border-radius: var(--radius-pill); border: none; cursor: pointer;
+  transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease-out;
+}
+.nav-btn.next {
+  background: var(--gradient-brand); color: #fff;
+  box-shadow: 0 8px 22px -6px rgba(224,18,139,0.5);
+  margin-inline-start: auto;
+}
+.nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -6px rgba(224,18,139,0.6); }
+.nav-btn.prev {
+  background: transparent; color: var(--fg-secondary);
+  border: 1.5px solid rgba(0,0,0,0.1);
+}
+:root[data-theme="dark"] .nav-btn.prev { border-color: rgba(255,255,255,0.14); }
+.nav-btn.prev:hover { color: var(--color-dark); border-color: rgba(0,0,0,0.2); }
+:root[data-theme="dark"] .nav-btn.prev:hover { border-color: rgba(255,255,255,0.28); }
+.nav-btn svg { width: 15px; height: 15px; flex: none; }
+.nav-btn.next svg { transform: rotate(90deg); }
+.nav-btn.prev svg { transform: rotate(-90deg); }
+.nav-btn[disabled] { opacity: .35; pointer-events: none; }
+
+/* ============ CONVERGE BANNER ============ */
+.converge {
+  max-width: 780px; margin: 60px auto 0; padding: 0 24px;
+}
+.converge-inner {
+  background: var(--color-dark);
+  color: var(--color-bg);
+  border-radius: 28px;
+  padding: 56px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.converge-inner::before {
+  content: ""; position: absolute; inset: -40% -10% auto -10%; height: 260px;
+  background: radial-gradient(50% 50% at 50% 30%, rgba(224,18,139,0.32), transparent 70%);
+}
+.converge-inner * { position: relative; z-index: 1; }
+.converge-label {
+  font-size: .76rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase;
+  background: var(--gradient-brand); -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin-bottom: 14px;
+}
+.converge-inner h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin: 0 0 16px; letter-spacing: -0.01em; }
+.converge-inner p { font-size: .96rem; line-height: 1.7; opacity: .82; max-width: 500px; margin: 0 auto; }
+
+/* ============ TEST CARD (step 7 — different layout) ============ */
+.test-card {
+  background: var(--color-white); border-radius: 24px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.05);
+  padding: 44px 38px; scroll-margin-top: 90px;
+}
+.test-card h3 {
+  font-family: var(--font-display); font-size: 1.4rem; font-weight: 800;
+  text-align: center; margin: 0 0 10px; letter-spacing: -0.01em;
+}
+.test-card .test-sub { text-align: center; font-size: .92rem; color: var(--fg-secondary); margin: 0 0 32px; }
+.test-prompt-shell {
+  border: 2px solid var(--color-magenta); border-radius: var(--radius-md);
+  padding: 18px 20px; background: color-mix(in srgb, var(--color-magenta) 4%, var(--color-white));
+}
+.test-prompt-shell .tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--color-magenta); margin-bottom: 10px;
+}
+.mission-box {
+  margin-top: 28px; background: var(--color-bg); border-radius: var(--radius-md); padding: 22px 24px;
+}
+:root[data-theme="dark"] .mission-box { background: rgba(255,255,255,0.04); }
+.mission-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.mission-tab {
+  flex: 1; padding: 10px 14px; border-radius: var(--radius-sm); border: none; cursor: pointer;
+  font-family: var(--font-body); font-weight: 700; font-size: .84rem;
+  background: transparent; color: var(--fg-secondary);
+  border: 1.5px solid rgba(0,0,0,0.1);
+  transition: all .2s ease-out;
+}
+:root[data-theme="dark"] .mission-tab { border-color: rgba(255,255,255,0.14); }
+.mission-tab.active { background: var(--gradient-brand); color: #fff; border-color: transparent; }
+.mission-panel { display: none; }
+.mission-panel.active { display: block; }
+.mission-panel p { font-size: .88rem; line-height: 1.65; margin: 0 0 14px; }
+.mission-panel .num-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; background: var(--gradient-brand);
+  color: #fff; font-size: .72rem; font-weight: 700; flex: none; margin-inline-end: 8px;
+}
+.mission-panel .step-line { display: flex; align-items: flex-start; gap: 4px; margin-bottom: 10px; font-size: .88rem; line-height: 1.55; }
+.watch-list { margin-top: 18px; }
+.watch-list h4 { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--fg-secondary); margin: 0 0 10px; }
+.watch-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: .88rem; line-height: 1.5; border-bottom: 1px solid rgba(0,0,0,0.05); }
+:root[data-theme="dark"] .watch-item { border-bottom-color: rgba(255,255,255,0.06); }
+.watch-item:last-child { border-bottom: none; }
+.watch-item .box { flex: none; width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--color-magenta); margin-top: 1px; }
+.watch-note { margin-top: 14px; font-size: .84rem; color: var(--fg-secondary); font-style: italic; }
+
+/* ============ CLOSING ============ */
+.closing {
+  text-align: center; padding: 100px 24px 80px;
+  max-width: 520px; margin: 0 auto;
+}
+.closing-mark {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 3.2vw, 1.9rem);
+  margin: 0 0 36px; line-height: 1.4; letter-spacing: -0.01em;
+}
+.closing-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.ghost-btn {
+  background: var(--color-white); color: var(--color-dark);
+  border: 1.5px solid rgba(0,0,0,0.12); border-radius: var(--radius-pill);
+  padding: 11px 24px; font-family: var(--font-body); font-weight: 700; font-size: .88rem;
+  cursor: pointer; transition: all .2s ease-out;
+}
+:root[data-theme="dark"] .ghost-btn { border-color: rgba(255,255,255,0.16); }
+.ghost-btn:hover { border-color: var(--color-magenta); color: var(--color-magenta); }
+
+footer.page-footer {
+  text-align: center; padding: 20px 24px 100px;
+  font-size: .78rem; color: var(--fg-secondary);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.footer-contact {
+  display: inline-flex; align-items: center; gap: 7px;
+  color: var(--fg-secondary); background: var(--color-white);
+  font-family: var(--font-body);
+  font-size: .84rem; font-weight: 700;
+  padding: 9px 20px; border-radius: var(--radius-pill);
+  border: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all .2s ease-out;
+}
+:root[data-theme="dark"] .footer-contact { border-color: rgba(255,255,255,0.14); }
+.footer-contact:hover { color: #25D366; border-color: #25D366; }
+.footer-contact svg { width: 15px; height: 15px; flex: none; }
+
+/* ============ CONNECT MODAL ============ */
+.connect-backdrop {
+  position: fixed; inset: 0; z-index: 95;
+  background: rgba(20,16,24,0.55); backdrop-filter: blur(3px);
+  display: none; align-items: center; justify-content: center; padding: 24px;
+}
+.connect-backdrop.open { display: flex; }
+.connect-modal {
+  width: 100%; max-width: 380px;
+  background: var(--color-white);
+  border-radius: 26px;
+  padding: 32px 30px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+  transform: scale(.94); opacity: 0;
+  transition: transform .28s cubic-bezier(.2,.8,.2,1), opacity .28s ease-out;
+}
+.connect-backdrop.open .connect-modal { transform: scale(1); opacity: 1; }
+.connect-modal-close {
+  position: absolute; top: 16px; left: 16px;
+  background: rgba(0,0,0,0.06); border: none; border-radius: 50%;
+  width: 32px; height: 32px; cursor: pointer; color: var(--fg-secondary);
+  display: flex; align-items: center; justify-content: center;
+}
+:root[data-theme="dark"] .connect-modal-close { background: rgba(255,255,255,0.08); }
+.connect-modal-close:hover { color: var(--color-magenta); }
+.connect-modal-inner { position: relative; }
+.connect-modal h3 {
+  font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; margin: 4px 0 6px;
+}
+.connect-modal .sub { font-size: .86rem; color: var(--fg-secondary); margin: 0 0 24px; }
+.connect-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--color-bg); border-radius: 16px; padding: 14px 16px;
+  text-decoration: none; color: var(--color-dark);
+  margin-bottom: 12px; text-align: right;
+  transition: transform .2s ease-out;
+}
+:root[data-theme="dark"] .connect-row { background: rgba(255,255,255,0.04); }
+.connect-row:hover { transform: translateY(-2px); }
+.connect-row .ic {
+  flex: none; width: 40px; height: 40px; border-radius: 50%;
+  background: #25D366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.connect-row .ic svg { width: 20px; height: 20px; }
+.connect-row .txt { flex: 1; min-width: 0; }
+.connect-row .txt strong { display: block; font-size: .9rem; font-weight: 700; }
+.connect-row .txt span { display: block; font-size: .78rem; color: var(--fg-secondary); }
+.connect-qr-wrap { margin-top: 20px; padding-top: 20px; border-top: 1px dashed rgba(0,0,0,0.1); }
+:root[data-theme="dark"] .connect-qr-wrap { border-top-color: rgba(255,255,255,0.14); }
+.connect-qr-wrap p { font-size: .8rem; color: var(--fg-secondary); margin: 0 0 12px; }
+.connect-qr-wrap img { width: 128px; height: 128px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.08); }
+:root[data-theme="dark"] .connect-qr-wrap img { background: #fff; padding: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">דלג לתוכן</a>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow"><span class="robot-dot"></span> ספר פרומפטים לסדנת אפיון</span>
+    <h1>חושבים לפני<span class="accent">שבונים</span></h1>
+    <p class="subhead">7 צעדים מרעיון ראשוני לאפיון שאפשר לבנות ממנו</p>
+    <p class="lede">Gemini יכול לבנות מהר. המטרה כאן היא דווקא <strong>להאט</strong>: לחשוב, לשאול, לדייק ולקבל החלטות — לפני שמתחילים לבנות.</p>
+    <button class="scroll-cta" id="heroCta">
+      בחרו מסלול והתחילו
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <img class="hero-robot" src="https://res.cloudinary.com/jrag9ksp/image/upload/BOOST%20ME/LOGOS/boostmelogo-trans.png" alt="">
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ TRACK PICKER ============ -->
+  <section class="picker-screen hidden" id="pickerScreen">
+    <div class="picker" id="pickerAnchor">
+      <div class="picker-eyebrow">שלב ראשון</div>
+      <h2>איזה כלי אתם מאפיינים היום?</h2>
+      <div class="track-cards">
+        <button class="track-card" data-track="a">
+          <div class="track-icon">🎓</div>
+          <h3>כלי הוראה</h3>
+          <p>אני רוצה לבנות כלי שאשתמש בו עם הסטודנטים שלי.</p>
+          <span class="track-cta">בחרו במסלול הזה <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg></span>
+        </button>
+        <button class="track-card" data-track="b">
+          <div class="track-icon">🛠️</div>
+          <h3>כלי עבודה וניהול</h3>
+          <p>אני רוצה לבנות כלי שתומך בתהליך העבודה שלי.</p>
+          <span class="track-cta">בחרו במסלול הזה <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APP SHELL (wizard) ============ -->
+  <div class="app-shell" id="appShell">
+
+    <div class="wizard-bar">
+      <div class="wizard-bar-top">
+        <span class="track-pill"><span class="dot"></span><span id="trackPillLabel">כלי הוראה</span></span>
+        <button class="switch-link" id="switchTrackBtn">החלפת מסלול</button>
+      </div>
+      <div class="wizard-progress" id="wizardProgress"></div>
+    </div>
+
+    <div class="wizard-viewport">
+      <div id="screensWrap"></div>
+
+      <div class="wizard-nav">
+        <button class="nav-btn prev" id="prevBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          הקודם
+        </button>
+        <button class="nav-btn next" id="nextBtn">
+          המשך
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <button class="helper-fab" id="helperFab">
+      <span class="spark">⚡</span> Gemini מתקדם מהר מדי?
+    </button>
+
+    <div class="helper-sheet-backdrop" id="helperSheetBackdrop">
+      <div class="helper-sheet">
+        <div class="helper-sheet-handle"></div>
+        <div class="helper-sheet-head">
+          <h3><span class="spark">⚡</span> האטת השיחה</h3>
+          <button class="helper-sheet-close" id="helperSheetClose" type="button" aria-label="סגור">✕</button>
+        </div>
+        <p class="helper-desc">שלחו את הפרומפט הזה בתוך השיחה הקיימת, בכל שלב — הוא מחזיר את Gemini לקצב של שאלה אחת בכל פעם.</p>
+        <div class="code-wrap">
+          <pre class="code-block" id="helperPromptText"></pre>
+        </div>
+        <button class="copy-btn" data-copy-target="helperPromptText">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-label">העתק פרומפט</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <span>Boost Me</span>
+  <button class="footer-contact" id="connectBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.06h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.51 3.68-8.19 8.24-8.19 2.2 0 4.27.86 5.82 2.41a8.14 8.14 0 0 1 2.41 5.79c0 4.51-3.68 8.24-8.23 8.24Zm4.5-6.16c-.25-.12-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.96-.15.16-.29.18-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.65-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.47-.01-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.24 3.75.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.17.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+    צרו קשר / הצטרפו
+  </button>
+</footer>
+
+<!-- ============ CONNECT MODAL ============ -->
+<div class="connect-backdrop" id="connectBackdrop">
+  <div class="connect-modal" role="dialog" aria-modal="true" aria-labelledby="connectTitle">
+    <div class="connect-modal-inner">
+      <button class="connect-modal-close" id="connectClose" type="button" aria-label="סגור">✕</button>
+      <h3 id="connectTitle">בואו נישאר בקשר</h3>
+      <p class="sub">שאלות, פידבק, או רוצים להמשיך ללמוד AI ביחד</p>
+
+      <a class="connect-row" href="https://wa.me/972545538883" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.06h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.51 3.68-8.19 8.24-8.19 2.2 0 4.27.86 5.82 2.41a8.14 8.14 0 0 1 2.41 5.79c0 4.51-3.68 8.24-8.23 8.24Z"/></svg></span>
+        <span class="txt"><strong>דברו איתי ישירות</strong><span>וואטסאפ אישי</span></span>
+      </a>
+
+      <a class="connect-row" href="https://brr7.short.gy/WhatsApp-group-ai-and-tools" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.06h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.51 3.68-8.19 8.24-8.19 2.2 0 4.27.86 5.82 2.41a8.14 8.14 0 0 1 2.41 5.79c0 4.51-3.68 8.24-8.23 8.24Z"/></svg></span>
+        <span class="txt"><strong>קבוצת AI & Tools</strong><span>קהילת הלמידה השוטפת</span></span>
+      </a>
+
+      <div class="connect-qr-wrap">
+        <p>או סרקו כדי להצטרף מהטלפון</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fbrr7.short.gy%2FWhatsApp-group-ai-and-tools" alt="QR להצטרפות לקבוצת AI & Tools">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+/* ================= CONTENT DATA ================= */
+const PH = (s) => s.replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>');
+
+const helperPrompts = {
+  a: `אתה מתקדם מהר מדי.
+
+חזור למצב של שיחת אפיון פדגוגית ושאל אותי **שאלה אחת בלבד בכל פעם**.
+
+אחרי כל תשובה שלי, ציין במשפט אחד לכל היותר מה הבנת ממנה, ואז שאל את השאלה האחת שהכי חשוב לברר עכשיו.
+
+אל תציג רשימת שאלות, אל תציע עדיין פתרון ואל תעבור לפיצ'רים או לבנייה.
+
+המטרה כרגע היא להעמיק את החשיבה הפדגוגית לפני שמחליטים מה לבנות.
+
+המשך מהמקום שבו עצרנו ושאל שאלה אחת בלבד.`,
+  b: `אתה מתקדם מהר מדי.
+
+חזור למצב של שיחת אפיון ושאל אותי **שאלה אחת בלבד בכל פעם**.
+
+אחרי כל תשובה שלי, ציין במשפט אחד לכל היותר מה הבנת ממנה, ואז שאל את השאלה האחת שהכי חשוב לברר עכשיו.
+
+אל תציג רשימת שאלות, אל תציע עדיין פתרון ואל תקפוץ לאוטומציה, לפיצ'רים או לבנייה.
+
+המטרה כרגע היא להבין היטב את העבודה לפני שמחליטים מה נכון לשפר או לבנות.
+
+המשך מהמקום שבו עצרנו ושאל שאלה אחת בלבד.`
+};
+
+const steps = {
+  a: [
+    {
+      label: 'צורך', eyebrow: 'שלב 1 · צורך',
+      title: 'מתחילים מהצורך הפדגוגי',
+      why: 'לא מתחילים מהפתרון — מתחילים מלמה בכלל צריך אותו.',
+      prompt: `אני רוצה לאפיין כלי הוראה שאשתמש בו עם הסטודנטים שלי, שהם סטודנטים להוראה.
+
+הרעיון הראשוני שלי:
+[כתבו כאן בכמה משפטים]
+
+לפני שמתחילים לבנות, אני רוצה להבין היטב מה צריך לקרות בלמידה ולמה.
+
+פעל כשותף חשיבה פדגוגי. נהל איתי שיחת אפיון הדרגתית ושאל **שאלה אחת בלבד בכל פעם**. חכה לתשובה שלי לפני שאתה מחליט מה השאלה הבאה שהכי חשוב לשאול.
+
+עזור לי לברר בהדרגה:
+
+* מה הצורך או האתגר הפדגוגי
+* מה אני רוצה שהסטודנטים יבינו, יתרגלו או יהיו מסוגלים לעשות
+* מה הסטודנטים יעשו בפועל עם הכלי
+* מה יהיה התפקיד שלי כמרצה
+* איך אדע שהכלי אכן תרם ללמידה
+* מה הכלי מאפשר שקשה יותר להשיג בדרך אחרת
+
+אל תעבור על הסעיפים כשאלון קבוע. התאם כל שאלה למה שכבר נאמר ולמה שעדיין לא ברור.
+
+אם התשובה שלי כללית מדי, בקש דוגמה קונקרטית. אם אתה מזהה הנחה, סתירה או החלטה שעדיין לא התקבלה — עצור וברר אותה.
+
+קח בחשבון שמדובר בסטודנטים להוראה, והעלה שאלות הקשורות לזהות המקצועית העתידית שלהם רק כאשר זה רלוונטי למטרת הכלי או לאופן השימוש בו.
+
+בשלב הזה אל תציע עדיין פיצ'רים, ממשק, טכנולוגיה או קוד. אם אני ממהר לבנייה לפני שהצורך הפדגוגי ברור מספיק, ציין בקצרה מה עדיין חסר והמשך באפיון.
+
+המטרה היא לא להצדיק רעיון שכבר עלה, אלא לבדוק מה באמת נכון לבנות.
+
+התחל בשאלה אחת בלבד.`,
+      outcome: 'צורך פדגוגי ברור, והבנה ראשונית של מה הסטודנטים צריכים ללמוד ולעשות.'
+    },
+    {
+      label: 'תרחיש', eyebrow: 'שלב 2 · תרחיש',
+      title: 'הופכים את הרעיון לתרחיש ממשי',
+      why: 'רעיון כללי עדיין אינו אפיון. עכשיו מתארים מה באמת קורה.',
+      prompt: `האפיון עדיין כללי מדי. אני רוצה להפוך אותו לתרחיש שימוש ממשי שאפשר לדמיין.
+
+בחר איתי רגע שימוש מרכזי אחד בכלי ועזור לי לפרק אותו צעד אחר צעד מנקודת המבט של הסטודנט.
+
+שאל אותי **שאלה אחת בלבד בכל פעם**.
+
+עזור לי להבין:
+
+* מה קורה רגע לפני השימוש
+* מה הסטודנט רואה או מקבל
+* מה הוא מתבקש לעשות
+* מה הוא עושה בפועל
+* איך הכלי מגיב
+* איזו חשיבה, החלטה או פעולה נדרשת ממנו
+* מה קורה אחר כך
+* מה אני כמרצה עושה לפני, במהלך או אחרי השימוש
+
+אם אני משתמש במילים כלליות כמו "אינטראקטיבי", "מעורבות", "משוב", "מותאם", "תרגול" או "למידה פעילה" — בקש ממני לתאר איך הן נראות בפועל בהתנהגות של הסטודנט.
+
+אל תציע עדיין ממשק, פיצ'רים או פתרון טכני. המטרה היא להבין מה קורה בשימוש ובלמידה לפני שמחליטים איך לבנות את הכלי.
+
+התחל מהרגע שקודם לשימוש והתקדם איתי לאורך התרחיש. אם מתגלה נקודה שדורשת בירור עמוק יותר, עצור והתמקד בה לפני שממשיכים.`,
+      outcome: 'תרחיש מרכזי שאפשר לעקוב אחריו מתחילתו ועד סופו.'
+    },
+    {
+      label: 'UX/UI', eyebrow: 'שלב 3 · UX → UI',
+      title: 'מתכננים UX/UI',
+      why: 'קודם מחליטים איך השימוש צריך לעבוד. רק אחר כך איך הממשק צריך לשרת אותו.',
+      substeps: [
+        { tag: 'שלב 1 — UX: חוויית השימוש', hint: 'עזרו לי לבדוק את חוויית השימוש לפני שמדברים על ממשק בכלל.' },
+      ],
+      prompt: `עכשיו אני רוצה לתכנן ולבדוק את חוויית השימוש והממשק של הכלי, לפני שמתחילים לבנות אותו.
+
+עבור איתי על תרחיש השימוש שכבר אפיינו, מתחילתו ועד סופו, ושאל אותי **שאלה אחת בלבד בכל פעם**.
+
+עבוד בשני שלבים:
+
+**שלב 1 — UX: חוויית השימוש**
+
+עזור לי לבדוק:
+
+* מה הסטודנט צריך להבין ולעשות בכל שלב
+* איזה מידע ומשוב הוא צריך כדי להתקדם וללמוד
+* איפה הוא עלול להתבלבל, להיתקע או לחוות עומס
+* מה קורה במקרה של טעות, קושי או ניסיון חוזר
+* מה אני כמרצה צריך לראות או לדעת במהלך השימוש או אחריו
+* אילו התאמות נדרשות לנגישות
+
+**שלב 2 — UI: הממשק שמשרת את החוויה**
+
+רק אחרי שחוויית השימוש ברורה מספיק, עזור לי להחליט:
+
+* איזה מידע ופעולות צריכים להופיע בכל שלב
+* מה צריך להיות בולט ומה משני
+* איך נכון לארגן ולחלק את המידע והפעולות
+* אילו מצבי ממשק נדרשים, למשל התחלה, עבודה, הצלחה, שגיאה, מצב ריק או טעינה
+* האם נדרשת התאמה למסכים או דרכי שימוש שונות
+* איך הממשק שומר על בהירות ונגישות
+
+אל תעבור על הסעיפים כשאלון קבוע. התקדם לאורך התרחיש ובכל פעם התמקד בהחלטה שהכי חשוב לדייק.
+
+כל החלטת ממשק צריכה לשרת צורך שכבר זיהינו בחוויית השימוש. אל תציע רכיב או מבנה רק כי הוא מקובל או נראה טוב.
+
+בשלב הזה אפשר להחליט על מבנה, היררכיה, פעולות ומצבי ממשק, אבל עדיין אין צורך לבחור צבעים, סגנון חזותי או עיצוב דקורטיבי.
+
+התחל בשלב ה-UX ובשאלה אחת בלבד.`,
+      outcome: 'עקרונות חוויית שימוש, מבנה ממשק, היררכיית מידע ומצבים מרכזיים.'
+    },
+    {
+      label: 'גבולות', eyebrow: 'שלב 4 · גבולות ופערים',
+      title: 'בודקים גבולות וסוגרים פערים',
+      why: 'לפני שבונים, מאתגרים את האפיון: מה הנחנו? מה עלול להשתבש? מה צריך להישאר בידי האדם? ומה באמת חייב להיכנס לגרסה הראשונה?',
+      prompt: `לפני שמתחילים לבנות, אני רוצה לבדוק את גבולות האפיון ולסגור פערים מהותיים.
+
+הסתכל באופן ביקורתי על כל מה שהחלטנו עד עכשיו. חפש הנחות שלא בדקנו, מצבים שבהם הכלי עלול לא לעבוד כפי שהתכוונו, החלטות שחסרות וגבולות שעדיין צריך להגדיר.
+
+שאל אותי **שאלה אחת בלבד בכל פעם**.
+
+עזור לי לבדוק:
+
+* אילו הנחות אנחנו עושים לגבי הסטודנטים, הידע שלהם או אופן השימוש שלהם
+* מה עלול לגרום לכלי לא להשיג את מטרת הלמידה
+* באילו מצבים הכלי עלול לתת משוב או מענה לא מתאים, מטעה או לא מועיל
+* אילו החלטות או פעולות צריכות להישאר בידי המרצה או הסטודנט
+* האם מעורב מידע אישי או רגיש, ואילו גבולות נדרשים סביב השימוש בו
+* אילו מצבים חריגים או שימושים לא צפויים חשוב להביא בחשבון
+* מה חייב להיכלל בגרסה הראשונה כדי שנוכל לבדוק אם הרעיון באמת עובד
+* מה אפשר להשאיר מחוץ לגרסה הראשונה
+
+אל תחזור על בדיקת ה-UX/UI שכבר ביצענו, אלא אם מתגלה פער שמשנה החלטה באפיון.
+
+אם אתה מזהה סיכון או הנחה שלא נבדקה, אל תפתור אותם מיד. קודם עזור לי להבין את המשמעות שלהם ולקבל החלטה.
+
+בסיום, סכם בקצרה:
+
+* אילו פערים או סיכונים מהותיים נשארו
+* אילו החלטות עדיין חייבות להתקבל
+* מהם הגבולות של הכלי
+* מהו ההיקף המינימלי של הגרסה הראשונה שאפשר לבנות ולבדוק
+
+אם נשאר פער מהותי שמונע מאיתנו לדעת מה נכון לבנות או איך לבדוק אותו — אמור זאת במפורש.
+
+אל תבנה עדיין את הכלי.`,
+      outcome: 'גבולות ברורים, סיכונים ידועים והיקף מוגדר לגרסה הראשונה.'
+    },
+    {
+      label: 'אפיון', eyebrow: 'שלב 5 · אפיון + בריף',
+      title: 'מסכמים את האפיון',
+      why: 'עכשיו הופכים את כל השיחה למסמך שאפשר לעבוד ממנו.',
+      milestone: true,
+      prompt: `סכם עכשיו את האפיון של כלי ההוראה על בסיס השיחה שלנו.
+
+אל תוסיף החלטות שלא התקבלו, ואל תהפוך הצעות, רעיונות או השערות להחלטות סופיות.
+
+פתח בשלושה חלקים קצרים:
+
+**החלטות שהתקבלו**
+מה כבר סגור וברור.
+
+**הנחות שעדיין צריך לבדוק**
+דברים שהתייחסנו אליהם כנכונים, אבל עדיין לא אימתנו.
+
+**שאלות פתוחות**
+דברים שעדיין דורשים החלטה.
+
+לאחר מכן כתוב מסמך אפיון מסודר הכולל:
+
+1. **מטרת הכלי** — הצורך הפדגוגי ומטרת הלמידה.
+2. **קהל והקשר** — למי הכלי מיועד ובאיזה שלב או הקשר בקורס משתמשים בו.
+3. **תרחיש השימוש המרכזי** — מה קורה מתחילת השימוש ועד סופו.
+4. **פעולות ותפקידים** — מה הסטודנטים עושים ומה תפקיד המרצה לפני, במהלך ואחרי השימוש.
+5. **מידע ומשוב** — איזה מידע הסטודנטים מקבלים, איזה משוב הכלי מספק ומה המרצה צריך לראות או לדעת.
+6. **חוויית שימוש וממשק** — עקרונות ה-UX, מבנה ה-UI, היררכיית המידע ומצבי הממשק המרכזיים שהחלטנו עליהם.
+7. **גבולות ואחריות** — אילו החלטות או פעולות נשארות בידי המרצה או הסטודנט, ומהם גבולות השימוש ב-AI.
+8. **פרטיות ונגישות** — מידע אישי או רגיש שדורש התייחסות, וצרכי נגישות או התאמות שהוגדרו.
+9. **גרסה ראשונה** — מה חייב להיכלל בגרסה הראשונה ומה נשאר מחוץ לה.
+10. **סיכונים והנחות** — סיכונים, מצבים חריגים והנחות שעדיין דורשים מעקב או בדיקה.
+
+בכל סעיף כתוב רק מידע שכבר עלה בשיחה. אם משהו עדיין לא הוגדר, כתוב במפורש:
+
+**"טרם הוחלט"**
+
+לאחר מסמך האפיון, הוסף חלק קצר בשם:
+
+## בריף לבניית הגרסה הראשונה
+
+סכם בו רק את מה שנדרש כדי לעבור לבנייה:
+
+* מה אנחנו בונים
+* עבור מי ובאיזה הקשר
+* מהו תרחיש השימוש המרכזי
+* מה חייב לקרות בגרסה הראשונה
+* מהו מבנה ה-UX/UI המרכזי
+* אילו החלטות נשארות בידי האדם
+* מה לא נכלל בגרסה הראשונה
+* אילו פערים חייבים להיסגר לפני הבנייה, אם יש
+
+אל תפתח מחדש את האפיון ואל תציע פיצ'רים נוספים.
+
+המטרה היא ליצור מקור אמת ברור לאפיון, ובסופו בריף ממוקד שאפשר להשתמש בו כבסיס לבניית הגרסה הראשונה.`,
+      outcome: 'מסמך אפיון מלא + בריף לבניית הגרסה הראשונה.'
+    }
+  ],
+  b: [
+    {
+      label: 'צורך', eyebrow: 'שלב 1 · צורך',
+      title: 'מתחילים מתהליך העבודה',
+      why: 'לא מתחילים מהפתרון — מתחילים מלמה בכלל צריך אותו.',
+      prompt: `אני רוצה לאפיין כלי שיעזור לי בתהליך עבודה או ניהול שאני מבצע במסגרת העבודה שלי.
+
+הרעיון הראשוני שלי:
+[כתבו כאן בכמה משפטים]
+
+לפני שמתחילים לבנות, אני רוצה להבין היטב את הצורך ואת תהליך העבודה עצמו.
+
+פעל כשותף חשיבה. נהל איתי שיחת אפיון הדרגתית ושאל **שאלה אחת בלבד בכל פעם**. חכה לתשובה שלי לפני שאתה מחליט מה השאלה הבאה שהכי חשוב לשאול.
+
+עזור לי לברר בהדרגה:
+
+* מה אני מנסה להשיג
+* איך התהליך מתבצע כיום
+* איפה נמצאים הקושי, החיכוך או העבודה המיותרת
+* אילו פעולות והחלטות חוזרות בתהליך
+* איזה מידע דרוש כדי לבצע אותו
+* איך אדע שהכלי באמת שיפר את העבודה
+
+אל תעבור על הסעיפים כשאלון קבוע. התאם כל שאלה למה שכבר נאמר ולמה שעדיין לא ברור.
+
+אם התשובה שלי כללית מדי, בקש דוגמה ממקרה אמיתי. אם אתה מזהה הנחה, סתירה או חלק בתהליך שעדיין לא ברור — עצור וברר אותו.
+
+אל תניח מראש שכל מה שאפשר לאוטומט כדאי לאוטומט. עזור לי להבחין בין מה שהכלי יכול לבצע, מה הוא יכול רק לסייע בו, ומה צריך להישאר בשליטתי.
+
+בשלב הזה אל תציע עדיין פיצ'רים, ממשק, טכנולוגיה או קוד. אם אני ממהר לבנייה לפני שהצורך ותהליך העבודה ברורים מספיק, ציין בקצרה מה עדיין חסר והמשך באפיון.
+
+המטרה היא להבין מה באמת נכון לשפר או לבנות — לא להצדיק פתרון שכבר חשבתי עליו.
+
+התחל בשאלה אחת בלבד.`,
+      outcome: 'צורך תפעולי ברור, והבנה ראשונית של תהליך העבודה הקיים.'
+    },
+    {
+      label: 'תרחיש', eyebrow: 'שלב 2 · תרחיש',
+      title: 'הופכים את התהליך לתרחיש ממשי',
+      why: 'רעיון כללי עדיין אינו אפיון. עכשיו מתארים מה באמת קורה.',
+      prompt: `האפיון עדיין כללי מדי. אני רוצה להפוך אותו לתרחיש עבודה ממשי שאפשר לעקוב אחריו מתחילתו ועד סופו.
+
+בחר איתי מקרה אמיתי או טיפוסי אחד ועזור לי לפרק אותו צעד אחר צעד.
+
+שאל אותי **שאלה אחת בלבד בכל פעם**.
+
+עזור לי להבין:
+
+* מה מפעיל את התהליך
+* איזה מידע מגיע אליי
+* מה אני בודק או עושה
+* אילו פעולות חוזרות בתהליך
+* אילו החלטות אני מקבל
+* איפה נדרשת פעולה, החלטה או שיקול דעת שלי
+* מה התוצאה או התוצר
+* למי הוא עובר, אם בכלל
+* מה קורה אחר כך
+
+אם אני משתמש במילים כלליות כמו "ייעול", "אוטומציה", "ניהול", "מעקב", "חיסכון בזמן" או "סדר" — בקש ממני לתאר איך הן נראות בפועל בתהליך העבודה.
+
+אל תציע עדיין מערכת, ממשק או אוטומציה. המטרה היא להבין את העבודה עצמה לפני שמחליטים איך לשנות אותה או לתמוך בה.
+
+התחל מהרגע שמפעיל את התהליך והתקדם איתי לאורכו. אם מתגלה נקודה שדורשת בירור עמוק יותר, עצור והתמקד בה לפני שממשיכים.`,
+      outcome: 'תרחיש מרכזי שאפשר לעקוב אחריו מתחילתו ועד סופו.'
+    },
+    {
+      label: 'UX/UI', eyebrow: 'שלב 3 · UX → UI',
+      title: 'מתכננים UX/UI',
+      why: 'קודם מחליטים איך השימוש צריך לעבוד. רק אחר כך איך הממשק צריך לשרת אותו.',
+      prompt: `עכשיו אני רוצה לתכנן ולבדוק את חוויית השימוש והממשק של הכלי, לפני שמתחילים לבנות אותו.
+
+עבור איתי על תרחיש העבודה שכבר אפיינו, מתחילתו ועד סופו, ושאל אותי **שאלה אחת בלבד בכל פעם**.
+
+עבוד בשני שלבים:
+
+**שלב 1 — UX: חוויית העבודה**
+
+עזור לי לבדוק:
+
+* מה אני צריך להבין ולעשות בכל שלב
+* איזה מידע ומשוב אני צריך כדי להתקדם
+* איפה עלולים להיווצר עומס, בלבול או פעולות מיותרות
+* מה קורה במקרה של טעות, כשל, מידע חסר או צורך בתיקון
+* אילו פעולות דורשות אישור, ביטול או אפשרות חזרה
+* אילו התאמות נדרשות לנגישות
+
+**שלב 2 — UI: הממשק שמשרת את העבודה**
+
+רק אחרי שחוויית העבודה ברורה מספיק, עזור לי להחליט:
+
+* איזה מידע ופעולות צריכים להופיע בכל שלב
+* מה צריך להיות בולט ומה משני
+* איך נכון לארגן ולחלק את המידע והפעולות
+* אילו מצבי ממשק נדרשים, למשל התחלה, עבודה, הצלחה, שגיאה, מצב ריק או טעינה
+* האם נדרשת התאמה למסכים או דרכי שימוש שונות
+* איך הממשק שומר על בהירות ונגישות בלי להציף במידע
+
+אל תעבור על הסעיפים כשאלון קבוע. התקדם לאורך התרחיש ובכל פעם התמקד בהחלטה שהכי חשוב לדייק.
+
+כל החלטת ממשק צריכה לשרת צורך שכבר זיהינו בתהליך העבודה. אל תציע רכיב או מבנה רק כי הוא מקובל או נראה טוב.
+
+בשלב הזה אפשר להחליט על מבנה, היררכיה, פעולות ומצבי ממשק, אבל עדיין אין צורך לבחור צבעים, סגנון חזותי או עיצוב דקורטיבי.
+
+התחל בשלב ה-UX ובשאלה אחת בלבד.`,
+      outcome: 'עקרונות חוויית שימוש, מבנה ממשק, היררכיית מידע ומצבים מרכזיים.'
+    },
+    {
+      label: 'גבולות', eyebrow: 'שלב 4 · גבולות ופערים',
+      title: 'בודקים גבולות וסוגרים פערים',
+      why: 'לפני שבונים, מאתגרים את האפיון: מה הנחנו? מה עלול להשתבש? מה צריך להישאר בידי האדם? ומה באמת חייב להיכנס לגרסה הראשונה?',
+      prompt: `לפני שמתחילים לבנות, אני רוצה לבדוק את גבולות האפיון ולסגור פערים מהותיים.
+
+הסתכל באופן ביקורתי על כל מה שהחלטנו עד עכשיו. חפש הנחות שלא בדקנו, מצבים שבהם הכלי עלול לא לעבוד כפי שאני צריך, החלטות שחסרות וגבולות שעדיין צריך להגדיר.
+
+שאל אותי **שאלה אחת בלבד בכל פעם**.
+
+עזור לי לבדוק:
+
+* אילו הנחות אנחנו עושים לגבי תהליך העבודה, המשתמשים או המידע שעליו הכלי מסתמך
+* מה עלול לגרום לכלי להפיק תוצאה לא נכונה, לא שימושית או לא אמינה
+* אילו פעולות, החלטות או נקודות בקרה צריכות להישאר בידי האדם
+* באילו מצבים התוצאה דורשת בדיקה, תיקון או אישור שלי
+* מה קורה כשמידע חסר, שגוי או לא חד-משמעי
+* האם מעורב מידע אישי, רגיש או חסוי, ואילו גבולות נדרשים סביב השימוש בו
+* אילו מצבים חריגים או שימושים לא צפויים חשוב להביא בחשבון
+* מה חייב להיכלל בגרסה הראשונה כדי שנוכל לבדוק אם הכלי באמת משפר את העבודה
+* מה אפשר להשאיר מחוץ לגרסה הראשונה
+
+אל תחזור על בדיקת ה-UX/UI שכבר ביצענו, אלא אם מתגלה פער שמשנה החלטה באפיון.
+
+אם אתה מזהה סיכון או הנחה שלא נבדקה, אל תפתור אותם מיד. קודם עזור לי להבין את המשמעות שלהם ולקבל החלטה.
+
+בסיום, סכם בקצרה:
+
+* אילו פערים או סיכונים מהותיים נשארו
+* אילו החלטות עדיין חייבות להתקבל
+* מהם הגבולות של הכלי
+* מהו ההיקף המינימלי של הגרסה הראשונה שאפשר לבנות ולבדוק
+
+אם נשאר פער מהותי שמונע מאיתנו לדעת מה נכון לבנות או איך לבדוק אותו — אמור זאת במפורש.
+
+אל תבנה עדיין את הכלי.`,
+      outcome: 'גבולות ברורים, סיכונים ידועים והיקף מוגדר לגרסה הראשונה.'
+    },
+    {
+      label: 'אפיון', eyebrow: 'שלב 5 · אפיון + בריף',
+      title: 'מסכמים את האפיון',
+      why: 'עכשיו הופכים את כל השיחה למסמך שאפשר לעבוד ממנו.',
+      milestone: true,
+      prompt: `סכם עכשיו את האפיון של כלי העבודה על בסיס השיחה שלנו.
+
+אל תוסיף החלטות שלא התקבלו, ואל תהפוך הצעות, רעיונות או השערות להחלטות סופיות.
+
+פתח בשלושה חלקים קצרים:
+
+**החלטות שהתקבלו**
+מה כבר סגור וברור.
+
+**הנחות שעדיין צריך לבדוק**
+דברים שהתייחסנו אליהם כנכונים, אבל עדיין לא אימתנו.
+
+**שאלות פתוחות**
+דברים שעדיין דורשים החלטה.
+
+לאחר מכן כתוב מסמך אפיון מסודר הכולל:
+
+1. **מטרת הכלי** — הבעיה או הצורך ומה אנחנו רוצים לשפר.
+2. **תהליך העבודה** — איך התהליך מתבצע כיום ומה מפעיל אותו.
+3. **משתמשים והקשר** — מי משתמש בכלי, מתי ובאיזה מצב עבודה.
+4. **תרחיש העבודה המרכזי** — מה קורה מתחילת התהליך ועד סופו.
+5. **מידע, פעולות ותוצרים** — איזה מידע נכנס, אילו פעולות והחלטות מתבצעות ומה התוצאה הרצויה.
+6. **חלוקת האחריות** — מה הכלי מבצע, במה הוא מסייע ומה נשאר בידי האדם, כולל נקודות בדיקה, תיקון ואישור.
+7. **חוויית שימוש וממשק** — עקרונות ה-UX, מבנה ה-UI, היררכיית המידע ומצבי הממשק המרכזיים שהחלטנו עליהם.
+8. **פרטיות, נגישות וגבולות** — מידע אישי, רגיש או חסוי, מגבלות שימוש וצרכי נגישות או התאמות שהוגדרו.
+9. **גרסה ראשונה** — מה חייב להיכלל בגרסה הראשונה ומה נשאר מחוץ לה.
+10. **סיכונים והנחות** — מצבי כשל, מקרים חריגים והנחות שעדיין דורשים בדיקה או מעקב.
+
+בכל סעיף כתוב רק מידע שכבר עלה בשיחה. אם משהו עדיין לא הוגדר, כתוב במפורש:
+
+**"טרם הוחלט"**
+
+לאחר מסמך האפיון, הוסף חלק קצר בשם:
+
+## בריף לבניית הגרסה הראשונה
+
+סכם בו רק את מה שנדרש כדי לעבור לבנייה:
+
+* מה אנחנו בונים
+* עבור מי ובאיזה תהליך עבודה
+* מהו תרחיש השימוש המרכזי
+* מה חייב לקרות בגרסה הראשונה
+* מהו מבנה ה-UX/UI המרכזי
+* מה הכלי עושה ומה נשאר בידי האדם
+* מה לא נכלל בגרסה הראשונה
+* אילו פערים חייבים להיסגר לפני הבנייה, אם יש
+
+אל תפתח מחדש את האפיון ואל תציע אוטומציות או פיצ'רים נוספים.
+
+המטרה היא ליצור מקור אמת ברור לאפיון, ובסופו בריף ממוקד שאפשר להשתמש בו כבסיס לבניית הגרסה הראשונה.`,
+      outcome: 'מסמך אפיון מלא + בריף לבניית הגרסה הראשונה.'
+    }
+  ]
+};
+
+const sharedStep = {
+  label: 'Gem', eyebrow: 'שלב 6 · Reverse Engineering',
+  title: 'הופכים את התהליך ל-Gem',
+  why: 'Gemini מנתח את השיחה שעברתם ומחלץ ממנה את המתודולוגיה — לא את הכלי הספציפי.',
+  prompt: `אני רוצה להפוך את תהליך האפיון שעברנו בשיחה הזאת ל-Gem שאוכל להשתמש בו שוב לאפיון כלים שונים.
+
+בצע **Reverse Engineering של דרך העבודה שלנו**.
+
+המטרה היא לא לשכפל את הכלי הספציפי שאפיינו ולא להגביל את ה-Gem לסוג הכלי שעבדנו עליו בשיחה הזאת. המטרה היא לזהות את מתודולוגיית האפיון, דפוסי השיחה והעקרונות שאפשר להעביר לתהליכי אפיון נוספים.
+
+נתח את השיחה וזהה:
+
+* איך התחיל תהליך האפיון
+* אילו סוגי שאלות קידמו את החשיבה
+* איך נשמר קצב השיחה
+* איך עברנו מרעיונות כלליים לתרחישים קונקרטיים
+* איך קיבלנו החלטות על חוויית שימוש וממשק
+* איך זיהינו הנחות, גבולות, סיכונים ופערים
+* איך הגדרנו את היקף הגרסה הראשונה
+* איך הבחנו בין החלטות, הנחות ושאלות פתוחות
+* אילו התנהגויות של ה-AI תרמו לתהליך
+* אילו פרטים שייכים רק למקרה הזה ואסור להכליל אותם
+
+על בסיס הניתוח, כתוב הוראות מלאות ומוכנות להדבקה ב-Gem חדש.
+
+## ה-Gem צריך לתמוך בשני מסלולי אפיון
+
+בתחילת שיחה חדשה, עליו לזהות איזה סוג כלי המשתמש רוצה לאפיין:
+
+**כלי הוראה** — כלי שמרצה משתמש בו עם הסטודנטים שלו. במסלול הזה יש להתאים את האפיון להקשר הפדגוגי, למטרת הלמידה, לפעולות הסטודנטים ולתפקיד המרצה.
+
+**כלי עבודה וניהול** — כלי שמסייע למשתמש בתהליך העבודה שלו. במסלול הזה יש להתאים את האפיון לתהליך העבודה הקיים, לצורך, למידע, לפעולות ולהחלטות, ולחלוקת האחריות בין האדם לכלי.
+
+אם סוג הכלי כבר ברור מהבקשה של המשתמש, אל תשאל אותו שוב. אם הוא אינו ברור — ברר אותו בשאלה אחת.
+
+המתודולוגיה שחילצת מהשיחה צריכה להיות משותפת לשני המסלולים, אבל השאלות עצמן צריכות להתאים למסלול ולהקשר של השיחה החדשה.
+
+ה-Gem החדש צריך לשמר את **דרך החשיבה**, לא את רצף השיחה מילה במילה.
+
+לכן:
+
+* אל תהפוך את השיחה לשאלון קשיח
+* אל תחייב לעבור על בירורים שכבר קיבלו מענה
+* התאם את השאלה הבאה למה שכבר ידוע
+* אפשר לחזור לנקודה קודמת אם מתגלה פער חדש
+* בשלבי בירור, שאל **שאלה אחת בלבד בכל פעם**
+* אל תשלים פרטים במקום המשתמש
+* אל תמהר לפתרון או לבנייה לפני שהתקבלו ההחלטות הנדרשות
+
+העיקרון המרכזי שצריך להישמר הוא:
+
+**לא ממהרים לבנות. משתמשים בשיחה כדי לחשוב, לברר ולקבל החלטות לפני הבנייה.**
+
+אל תכניס להוראות ה-Gem:
+
+* פרטים ששייכים רק לכלי שאפיינו
+* שמות, דוגמאות או החלטות ספציפיות מהשיחה הנוכחית
+* הנחות הנובעות רק מסוג הכלי שעבדנו עליו עכשיו
+* שאלון קבוע שחייבים לעבור עליו במלואו
+
+בסיום הצג רק:
+
+1. **הוראות מלאות ל-Gem** — מוכנות להעתקה ולהדבקה.
+2. **5 פתיחים קצרים לשיחה** — לפחות שניים לכלי הוראה, לפחות שניים לכלי עבודה וניהול, ופתיח אחד כללי.
+
+לפני הצגת התוצאה, בדוק שה-Gem שיצרת משמר את **מתודולוגיית האפיון**, אך מסוגל להתחיל שיחה חדשה גם במסלול שונה מזה שבו התקיימה השיחה הנוכחית.`,
+  outcome: 'הוראות מוכנות ל-Gem, 5 פתיחי שיחה, ו-Gem שיודע לעבוד בשני המסלולים.'
+};
+
+const testPrompt = `יש לי רעיון ראשוני לכלי:
+
+[כתבו כאן רעיון קצר — בכוונה לא אפיון מלא]
+
+אני רוצה שתעזור לי לחשוב עליו ולהתקדם.
+
+התחל.`;
+
+const trackMeta = {
+  a: { name: 'כלי הוראה', short: 'הוראה' },
+  b: { name: 'כלי עבודה וניהול', short: 'ניהול' }
+};
+
+/* ================= DOM REFS ================= */
+const pickerScreen = document.getElementById('pickerScreen');
+const appShell = document.getElementById('appShell');
+const trackPillLabel = document.getElementById('trackPillLabel');
+const helperPromptText = document.getElementById('helperPromptText');
+
+/* ================= HERO PARTICLE FIELD ================= */
+(function initHeroCanvas() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, particles, dpr;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.parentElement.offsetWidth;
+    h = canvas.parentElement.offsetHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round((w * h) / 14000);
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 2.2 + 0.6,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+      o: Math.random() * 0.5 + 0.2
+    }));
+  }
+
+  function drawStatic() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${p.o})`;
+      ctx.fill();
+    });
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${p.o})`;
+      ctx.fill();
+    });
+    // faint connecting lines for nearby particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 110) {
+          ctx.strokeStyle = `rgba(255,255,255,${0.06 * (1 - dist / 110)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  resize();
+  if (reduceMotion) {
+    drawStatic();
+  } else {
+    tick();
+  }
+  window.addEventListener('resize', () => { resize(); if (reduceMotion) drawStatic(); });
+})();
+
+let currentTrack = null;
+let currentScreen = 0; // 0-4 = track steps, 5 = shared (Gem), 6 = test
+const ALL_LABELS = ['צורך','תרחיש','UX/UI','גבולות','אפיון','Gem','בדיקה'];
+const TOTAL_SCREENS = 7;
+
+const screensWrap = document.getElementById('screensWrap');
+const wizardProgress = document.getElementById('wizardProgress');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function buildProgressBar() {
+  wizardProgress.innerHTML = '';
+  ALL_LABELS.forEach((label, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'wp-step';
+    btn.innerHTML = `<span class="wp-num">${i+1}</span><span class="wp-label">${label}</span><span class="wp-connector"></span>`;
+    btn.addEventListener('click', () => goToScreen(i));
+    wizardProgress.appendChild(btn);
+  });
+}
+
+function updateProgressBar() {
+  wizardProgress.querySelectorAll('.wp-step').forEach((n, i) => {
+    n.classList.toggle('done', i < currentScreen);
+    n.classList.toggle('current', i === currentScreen);
+  });
+}
+
+function makeCodeBlock(text) {
+  const wrap = document.createElement('div');
+  wrap.className = 'code-wrap';
+  const pre = document.createElement('pre');
+  pre.className = 'code-block';
+  const id = 'code-' + Math.random().toString(36).slice(2, 9);
+  pre.id = id;
+  pre.innerHTML = PH(text);
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.setAttribute('data-copy-target', id);
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">העתק פרומפט</span>`;
+  wrap.appendChild(pre);
+  const holder = document.createElement('div');
+  holder.appendChild(wrap);
+  holder.appendChild(btn);
+  return holder;
+}
+
+function buildStepScreen(step, screenIndex, isShared) {
+  const screen = document.createElement('section');
+  screen.className = 'wizard-screen';
+  screen.id = `screen-${screenIndex}`;
+
+  const card = document.createElement('div');
+  card.className = 'screen-card';
+  card.setAttribute('data-num', String(screenIndex + 1).padStart(2, '0'));
+
+  const head = document.createElement('div');
+  head.className = 'screen-head';
+  head.innerHTML = `<div class="screen-eyebrow">${step.eyebrow}</div><h2>${step.title}</h2>`;
+  card.appendChild(head);
+
+  if (isShared) {
+    const converge = document.createElement('div');
+    converge.className = 'converge-inner';
+    converge.style.marginBottom = '26px';
+    converge.innerHTML = `
+      <div class="converge-label">מהכלי הזה — לדרך עבודה שאפשר להשתמש בה שוב</div>
+      <h3 style="font-size:1.05rem;margin-bottom:10px;">עד כאן אפיינתם כלי אחד</h3>
+      <p style="font-size:.88rem;">עכשיו אפשר להפוך את דרך החשיבה שעברתם ל-Gem שילווה גם תהליכי אפיון עתידיים — בשני המסלולים.</p>
+    `;
+    card.appendChild(converge);
+  }
+
+  const why = document.createElement('div');
+  why.className = 'why-now';
+  why.innerHTML = `<span class="icon">💭</span><div><strong>למה עכשיו?</strong>${step.why}</div>`;
+  card.appendChild(why);
+
+  if (step.label === 'UX/UI') {
+    const l1 = document.createElement('div');
+    l1.className = 'substep-label'; l1.textContent = 'UX — חוויית השימוש';
+    const h1 = document.createElement('p');
+    h1.className = 'substep-hint'; h1.textContent = 'קודם: מה חייב לקרות בשימוש עצמו.';
+    const l2cont = document.createElement('div');
+    l2cont.innerHTML = `<div class="substep-label" style="margin-top:30px">UI — הממשק שמשרת אותה</div><p class="substep-hint">רק אחר כך: איך זה נראה ומאורגן.</p>`;
+    card.appendChild(l1); card.appendChild(h1);
+    card.appendChild(makeCodeBlock(step.prompt));
+    card.appendChild(l2cont);
+  } else {
+    card.appendChild(makeCodeBlock(step.prompt));
+  }
+
+  const outcome = document.createElement('div');
+  outcome.className = 'outcome-box';
+  outcome.innerHTML = `<span class="icon">✅</span><div><strong>בסוף השלב אמור להיות לכם</strong><p>${step.outcome}</p></div>`;
+  card.appendChild(outcome);
+
+  if (step.milestone) {
+    const ms = document.createElement('div');
+    ms.className = 'milestone';
+    ms.innerHTML = `🎯 יש לכם אפיון.`;
+    card.appendChild(ms);
+  }
+
+  screen.appendChild(card);
+  return screen;
+}
+
+function buildTestScreen(screenIndex) {
+  const screen = document.createElement('section');
+  screen.className = 'wizard-screen';
+  screen.id = `screen-${screenIndex}`;
+
+  const card = document.createElement('div');
+  card.className = 'test-card';
+  card.innerHTML = `
+    <h3>עכשיו בודקים אם הוא באמת למד את השיטה</h3>
+    <p class="test-sub">מבחן עיוור — ה-Gem לא רואה את רשימת הציפיות, רק אתן</p>
+    <div class="test-prompt-shell">
+      <span class="tag">📋 פרומפט הבדיקה — להעתקה בתוך ה-Gem</span>
+      <div class="code-wrap"><pre class="code-block" id="testPromptText"></pre></div>
+      <button class="copy-btn" data-copy-target="testPromptText">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span class="copy-label">העתק פרומפט</span>
+      </button>
+    </div>
+    <div class="mission-box">
+      <div class="mission-tabs">
+        <button class="mission-tab active" data-mission="1">מבחן 1</button>
+        <button class="mission-tab" data-mission="2">מבחן 2</button>
+      </div>
+      <div class="mission-panel active" data-mission-panel="1"><p><strong>פתחו שיחה חדשה</strong> ובדקו רעיון מכלי הוראה.</p></div>
+      <div class="mission-panel" data-mission-panel="2"><p><strong>פתחו שיחה חדשה</strong> ובדקו רעיון מכלי עבודה וניהול.</p></div>
+      <div class="watch-list">
+        <h4>מה מחפשים?</h4>
+        <div class="watch-item"><span class="box"></span>מזהה את המסלול הנכון</div>
+        <div class="watch-item"><span class="box"></span>שואל שאלה אחת בכל פעם</div>
+        <div class="watch-item"><span class="box"></span>לא שואל שוב מידע שכבר ברור</div>
+        <div class="watch-item"><span class="box"></span>מבקש דוגמה כשצריך</div>
+        <div class="watch-item"><span class="box"></span>מזהה פערים והנחות</div>
+        <div class="watch-item"><span class="box"></span>לא קופץ לפתרון</div>
+        <div class="watch-item"><span class="box"></span>יודע לעצור בקשה מוקדמת ל"פשוט תבנה"</div>
+      </div>
+      <p class="watch-note">לא צריך להשלים את כל האפיון. 2–3 חילופים בכל מסלול מספיקים לבדיקה ראשונית.</p>
+    </div>
+    <div class="closing">
+      <p class="closing-mark">הבנייה מתחילה רק אחרי שהמחשבה התבהרה.</p>
+      <div class="closing-actions">
+        <button class="ghost-btn" id="backToTrackBtn">חזרה למסלול</button>
+        <button class="ghost-btn" id="restartBtn">התחלה מחדש</button>
+      </div>
+    </div>
+  `;
+  screen.appendChild(card);
+  return screen;
+}
+
+function goToScreen(i) {
+  currentScreen = Math.max(0, Math.min(TOTAL_SCREENS - 1, i));
+  document.querySelectorAll('.wizard-screen').forEach((s, idx) => {
+    s.classList.toggle('active', idx === currentScreen);
+  });
+  updateProgressBar();
+  prevBtn.toggleAttribute('disabled', currentScreen === 0);
+  nextBtn.textContent = '';
+  const nextLabel = currentScreen === TOTAL_SCREENS - 1 ? '' : (currentScreen === 5 ? 'המשך לבדיקת ה-Gem' : 'המשך');
+  if (currentScreen === TOTAL_SCREENS - 1) {
+    nextBtn.style.display = 'none';
+  } else {
+    nextBtn.style.display = '';
+    nextBtn.innerHTML = `${nextLabel}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
+  }
+  document.querySelector('.wizard-viewport').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderTrack(track) {
+  dismissHero();
+  currentTrack = track;
+  document.documentElement.setAttribute('data-active-track', track);
+  trackPillLabel.textContent = trackMeta[track].name;
+  helperPromptText.innerHTML = PH(helperPrompts[track]);
+
+  screensWrap.innerHTML = '';
+  steps[track].forEach((s, i) => screensWrap.appendChild(buildStepScreen(s, i, false)));
+  screensWrap.appendChild(buildStepScreen(sharedStep, 5, true));
+  screensWrap.appendChild(buildTestScreen(6));
+
+  document.getElementById('testPromptText').innerHTML = PH(testPrompt);
+
+  document.getElementById('backToTrackBtn').addEventListener('click', backToTrackPicker);
+  document.getElementById('restartBtn').addEventListener('click', () => {
+    if (!confirm('להתחיל מחדש? זה יחזיר אתכם לבחירת מסלול — הפרומפטים שכבר העתקתם נשארים בשיחה שלכם עם Gemini.')) return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    backToTrackPicker();
+  });
+
+  document.querySelectorAll('.mission-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.mission-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.mission-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector(`[data-mission-panel="${tab.getAttribute('data-mission')}"]`).classList.add('active');
+    });
+  });
+
+  pickerScreen.classList.add('hidden');
+  appShell.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  goToScreen(0);
+}
+
+function backToTrackPicker() {
+  appShell.classList.remove('active');
+  pickerScreen.classList.remove('hidden');
+  document.getElementById('pickerAnchor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelectorAll('.track-card').forEach(card => {
+  card.addEventListener('click', () => renderTrack(card.getAttribute('data-track')));
+});
+
+function dismissHero() {
+  document.querySelector('.hero').classList.add('hidden');
+}
+
+document.getElementById('heroCta').addEventListener('click', () => {
+  dismissHero();
+  pickerScreen.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+});
+
+document.getElementById('switchTrackBtn').addEventListener('click', backToTrackPicker);
+
+prevBtn.addEventListener('click', () => goToScreen(currentScreen - 1));
+nextBtn.addEventListener('click', () => goToScreen(currentScreen + 1));
+
+/* ============ HELPER BOTTOM SHEET ============ */
+const helperFab = document.getElementById('helperFab');
+const helperSheetBackdrop = document.getElementById('helperSheetBackdrop');
+helperFab.addEventListener('click', () => helperSheetBackdrop.classList.add('open'));
+document.getElementById('helperSheetClose').addEventListener('click', () => helperSheetBackdrop.classList.remove('open'));
+helperSheetBackdrop.addEventListener('click', (e) => { if (e.target === helperSheetBackdrop) helperSheetBackdrop.classList.remove('open'); });
+
+/* ============ CONNECT MODAL ============ */
+const connectBackdrop = document.getElementById('connectBackdrop');
+document.getElementById('connectBtn').addEventListener('click', () => connectBackdrop.classList.add('open'));
+document.getElementById('connectClose').addEventListener('click', () => connectBackdrop.classList.remove('open'));
+connectBackdrop.addEventListener('click', (e) => { if (e.target === connectBackdrop) connectBackdrop.classList.remove('open'); });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  helperSheetBackdrop.classList.remove('open');
+  connectBackdrop.classList.remove('open');
+});
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.copy-btn');
+  if (!btn) return;
+  const targetId = btn.getAttribute('data-copy-target');
+  const block = document.getElementById(targetId);
+  const text = block.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const label = btn.querySelector('.copy-label');
+    const original = label.textContent;
+    label.textContent = 'הועתק ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { label.textContent = original; btn.classList.remove('copied'); }, 1800);
+  }).catch(() => {
+    const range = document.createRange();
+    range.selectNodeContents(block);
+    const sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(range);
+    document.execCommand('copy');
+    sel.removeAllRanges();
+  });
+});
+
+buildProgressBar();
+
+})();
+</script>
+</body>
+</html>
