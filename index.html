@@ -55,6 +55,7 @@
 }
 
 * { box-sizing: border-box; }
+html { font-size: 19.2px; }
 html, body {
   margin: 0; padding: 0;
   background:
@@ -112,20 +113,19 @@ body { transition: background-color .3s ease, color .3s ease; }
 }
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 6vw, 4rem);
+  font-size: clamp(2.2rem, 11vw, 3.4rem);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   margin: 0 0 clamp(12px, 2.5vh, 22px);
   color: #fff;
   text-shadow: 0 4px 32px rgba(0,0,0,0.12);
 }
+.hero h1 .w { display: block; }
+.hero h1 .accent { color: #FFE8D6; }
 @media (min-width: 460px) {
   .hero h1 { white-space: nowrap; font-size: clamp(1.9rem, 4.8vw, 4rem); }
-}
-.hero h1 .accent {
-  -webkit-text-stroke: 1.5px rgba(255,255,255,0.9);
-  color: rgba(255,255,255,0.12);
+  .hero h1 .w { display: inline; }
 }
 .hero .subhead {
   font-family: var(--font-display);
@@ -650,6 +650,44 @@ footer.page-footer.hidden { display: none; }
 .footer-contact:hover { color: #25D366; border-color: #25D366; }
 .footer-contact svg { width: 15px; height: 15px; flex: none; }
 
+/* ============ DESKTOP QR FAB ============ */
+.desktop-qr-fab {
+  display: none;
+}
+@media (min-width: 900px) {
+  .desktop-qr-fab {
+    display: inline-flex; align-items: center; gap: 10px;
+    position: fixed; bottom: 28px; left: 28px; z-index: 80;
+    background: var(--color-white); color: var(--color-dark);
+    border: none; border-radius: var(--radius-pill);
+    padding: 14px 24px 14px 16px;
+    font-family: var(--font-body); font-weight: 700; font-size: .92rem;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease-out;
+  }
+  .desktop-qr-fab:hover { transform: translateY(-3px); box-shadow: 0 14px 38px rgba(0,0,0,0.24); }
+}
+.desktop-qr-fab .qr-fab-icon {
+  flex: none; width: 34px; height: 34px; border-radius: 10px;
+  background: var(--gradient-brand);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.desktop-qr-fab .qr-fab-icon svg { width: 18px; height: 18px; }
+
+.qr-modal-content { text-align: center; }
+.qr-modal-content img {
+  width: 220px; height: 220px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  margin: 10px 0 16px;
+}
+.qr-modal-content .qr-link {
+  display: block; font-size: .82rem; color: var(--fg-secondary);
+  word-break: break-all;
+}
+
 /* ============ CONNECT MODAL ============ */
 .connect-backdrop {
   position: fixed; inset: 0; z-index: 95;
@@ -722,7 +760,7 @@ footer.page-footer.hidden { display: none; }
   <div class="hero-glow"></div>
   <div class="hero-inner">
     <img class="hero-logo" src="https://res.cloudinary.com/jrag9ksp/image/upload/v1786216971/BOOST%20ME/LOGOS/logo-icon-only.png" alt="Boost Me">
-    <h1>חושבים לפני <span class="accent">שבונים</span></h1>
+    <h1><span class="w">חושבים</span> <span class="w">לפני</span> <span class="w accent">שבונים</span></h1>
     <p class="subhead">7 צעדים מרעיון ראשוני לאפיון שאפשר לבנות ממנו</p>
     <p class="lede">Gemini יכול לבנות מהר. המטרה כאן היא דווקא <strong>להאט</strong>: לחשוב, לשאול, לדייק ולקבל החלטות — לפני שמתחילים לבנות.</p>
     <div class="hero-actions">
@@ -839,6 +877,28 @@ footer.page-footer.hidden { display: none; }
       <div class="connect-qr-wrap">
         <p>או סרקו כדי להצטרף מהטלפון</p>
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fbrr7.short.gy%2FWhatsApp-group-ai-and-tools" alt="QR להצטרפות לקבוצת AI & Tools">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DESKTOP QR FAB (projector use) ============ -->
+<button class="desktop-qr-fab" id="desktopQrFab">
+  <span class="qr-fab-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg>
+  </span>
+  סרקו וקבלו את ספר הפרומפטים
+</button>
+
+<div class="connect-backdrop" id="qrBackdrop">
+  <div class="connect-modal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <div class="connect-modal-inner">
+      <button class="connect-modal-close" id="qrModalClose" type="button" aria-label="סגור">✕</button>
+      <h3 id="qrModalTitle">ספר הפרומפטים בטלפון שלכם</h3>
+      <p class="sub">סרקו כדי לפתוח את העמוד ולעבוד ממנו לאורך הסדנה</p>
+      <div class="qr-modal-content">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fbrr7.short.gy%2Fthinking-before-building" alt="QR לספר הפרומפטים">
+        <span class="qr-link">brr7.short.gy/thinking-before-building</span>
       </div>
     </div>
   </div>
@@ -1704,10 +1764,17 @@ document.getElementById('heroConnectBtn').addEventListener('click', () => connec
 document.getElementById('connectClose').addEventListener('click', () => connectBackdrop.classList.remove('open'));
 connectBackdrop.addEventListener('click', (e) => { if (e.target === connectBackdrop) connectBackdrop.classList.remove('open'); });
 
+/* ============ DESKTOP QR FAB ============ */
+const qrBackdrop = document.getElementById('qrBackdrop');
+document.getElementById('desktopQrFab').addEventListener('click', () => qrBackdrop.classList.add('open'));
+document.getElementById('qrModalClose').addEventListener('click', () => qrBackdrop.classList.remove('open'));
+qrBackdrop.addEventListener('click', (e) => { if (e.target === qrBackdrop) qrBackdrop.classList.remove('open'); });
+
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
   helperSheetBackdrop.classList.remove('open');
   connectBackdrop.classList.remove('open');
+  qrBackdrop.classList.remove('open');
 });
 
 document.addEventListener('click', (e) => {
